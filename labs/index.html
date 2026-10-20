@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Labs | Zak Knudsen</title>
+  <meta name="description" content="Personal engineering projects by Zak Knudsen: an evidence-based CV system and an AI pair-programming method with a Rust service template.">
+  <link rel="canonical" href="https://zakknudsen.com/labs/">
+  <link rel="icon" href="/img/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/css/style.css">
+
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Zak Knudsen">
+  <meta property="og:title" content="Labs | Zak Knudsen">
+  <meta property="og:description" content="Personal engineering projects. The repositories are private.">
+  <meta property="og:url" content="https://zakknudsen.com/labs/">
+  <meta name="twitter:card" content="summary">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to main content</a>
+
+  <header class="site-header">
+    <a class="site-title" href="/">Zak Knudsen</a>
+    <nav class="site-nav" aria-label="Main">
+      <ul>
+        <li><a href="/work/">Work</a></li>
+        <li><a href="/about/">About</a></li>
+        <li><a href="/#contact">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main id="main">
+    <h1>Labs</h1>
+    <p class="lede">Personal engineering projects. The repositories are private, so I describe the work here.</p>
+
+    <article class="card">
+      <h2>Evidence-based CV system <span class="status">Active</span></h2>
+      <p>AI drafting tools kept inflating my CV. Rough estimates hardened into precise figures from one draft to the next. Nothing recorded where a claim came from. At one point twelve numbers on my CV had no source at all. So I rebuilt it from a fact base. Every claim has a source and a tier: verified, stated, estimated, or do-not-claim. Only verified and stated claims reach an employer. A Python generator builds the Word and PDF files from the fact base. It also writes a build sheet that maps every CV line to its sources. A small Next.js editor edits the fact files in place. It leaves untouched lines byte-identical. It refuses a write if the file changed on disk since it was loaded. Before each release, independent AI review agents audit the CV against the facts. None of the twelve unsourced numbers survived.</p>
+      <ul class="chips"><li>Python</li><li>Node.js</li><li>Next.js</li><li>TypeScript</li><li>docx generation</li><li>AI review agents</li></ul>
+      <figure class="diagram">
+        <ol>
+          <li>Fact files</li>
+          <li>Generator</li>
+          <li>CV (Word, PDF) and build sheet</li>
+          <li>Audit agents</li>
+          <li>Corrections go back into the fact files</li>
+        </ol>
+        <figcaption>The flow, step by step.</figcaption>
+      </figure>
+    </article>
+
+    <article class="card">
+      <h2>AI pair-programming method and Rust service template <span class="status">Active</span></h2>
+      <p>A working method for building software with AI agents. It draws on domain-driven design, BDD, TDD, and ADRs. Its rules are encoded as tools and shared vocabulary that constrain what an agent does. Working documents expire when a branch merges. One hard rule: CLI before HTTP. A Rust, Axum, and PostgreSQL service template puts the method into practice.</p>
+      <ul class="chips"><li>Rust</li><li>Axum</li><li>PostgreSQL</li><li>ADRs</li><li>TDD</li><li>BDD</li><li>DDD</li></ul>
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <ul>
+      <li><a href="/work/">Work</a></li>
+      <li><a href="/about/">About</a></li>
+      <li><a href="/labs/">Labs</a></li>
+    </ul>
+    <small>© 2026 Zak Knudsen</small>
+  </footer>
+</body>
+</html>

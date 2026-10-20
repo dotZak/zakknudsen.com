@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Architecting a composable telehealth platform | Zak Knudsen</title>
+  <meta name="description" content="Case study: I ran discovery and architected a composable, GDPR-aware telehealth platform for a UK gut-health startup from SaaS parts. Soft-launched January 2023.">
+  <link rel="canonical" href="https://zakknudsen.com/work/composable-telehealth-platform/">
+  <link rel="icon" href="/img/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/css/style.css">
+
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Zak Knudsen">
+  <meta property="og:title" content="Architecting a composable telehealth platform">
+  <meta property="og:description" content="Discovery, a vendor-composed architecture, and GDPR-aware data flows for a UK gut-health telehealth startup.">
+  <meta property="og:url" content="https://zakknudsen.com/work/composable-telehealth-platform/">
+  <meta name="twitter:card" content="summary">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to main content</a>
+
+  <header class="site-header">
+    <a class="site-title" href="/">Zak Knudsen</a>
+    <nav class="site-nav" aria-label="Main">
+      <ul>
+        <li><a href="/work/" aria-current="page">Work</a></li>
+        <li><a href="/about/">About</a></li>
+        <li><a href="/#contact">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main id="main">
+    <article>
+      <header>
+        <p class="eyebrow">Case study</p>
+        <h1>Architecting a composable telehealth platform</h1>
+        <p class="lede">A UK gut-health telehealth startup, via Browser London. Employee (Tech Lead). June 2022 – March 2023.</p>
+        <dl class="meta">
+          <div><dt>Client</dt><dd>A UK gut-health telehealth startup, via Browser London</dd></div>
+          <div><dt>Role</dt><dd>Tech Lead (employee)</dd></div>
+          <div><dt>Period</dt><dd>June 2022 – March 2023</dd></div>
+          <div><dt>Team</dt><dd>I owned architecture and engineering. A designer, a project manager, and a front-end developer worked with me. I reviewed the front-end code.</dd></div>
+        </dl>
+      </header>
+
+      <section aria-labelledby="context">
+        <h2 id="context">Context</h2>
+        <p>The startup offered video consultations with gastrointestinal specialists, dieticians, and GPs. It also sold products and subscriptions and fulfilled prescriptions. NHS doctors practised on the platform alongside their NHS work.</p>
+      </section>
+
+      <section aria-labelledby="discovery">
+        <h2 id="discovery">Discovery</h2>
+        <p>I ran discovery and presented the findings to the client's board.</p>
+      </section>
+
+      <section aria-labelledby="architecture">
+        <h2 id="architecture">The architecture</h2>
+        <p>I designed a composable platform. SaaS vendors handled the specialist work:</p>
+        <ul>
+          <li>Semble for video consultations and clinical workflow.</li>
+          <li>Truepill for pharmacy.</li>
+          <li>Stripe for payments.</li>
+          <li>Auth0 for identity.</li>
+          <li>Sanity for content.</li>
+          <li>Pipedream for webhook orchestration.</li>
+        </ul>
+        <p>Pipedream carried webhooks between Stripe, Semble, Truepill, and Directus. Directus on PostgreSQL with row-level security held the platform's own data. A Next.js and TypeScript front end tied it together. I wrote Terraform to provision the AWS edge: S3, CloudFront, and Route 53.</p>
+
+        <figure class="diagram">
+          <div class="diagram-scroll">
+            <img src="/img/telehealth-composable.svg" width="960" height="540"
+                 alt="Container diagram. Patients and clinicians use a Next.js front end hosted on S3 and CloudFront, with DNS in Route 53, provisioned with Terraform. The front end calls Auth0 for identity, Stripe for payments, Sanity for content, Directus on PostgreSQL with row-level security for platform data with no patient data, and Semble for video consultations, clinical workflow, and all patient data. Pipedream carries webhooks between Stripe, Semble, Truepill, and Directus. Truepill handles pharmacy fulfilment. A boundary labeled Patient data stays here surrounds Semble.">
+          </div>
+          <figcaption>Container view. Patient data stays inside the Semble boundary.</figcaption>
+        </figure>
+      </section>
+
+      <section aria-labelledby="patient-data">
+        <h2 id="patient-data">Keeping patient data out of the platform</h2>
+        <p>I designed the GDPR-compliant data flows and consent management. The split was deliberate. Directus held marketing, blog, and other non-personal data. Semble held sessions and all patient information. Patient data stayed in the clinical system of record and out of the platform database.</p>
+      </section>
+
+      <section aria-labelledby="hardest-call">
+        <h2 id="hardest-call">The hardest call</h2>
+        <p>My own instinct was a monolith. The agency chose a low-code, vendor-composed architecture instead. At the time that was a new approach. We spent months on strategy and vendor selection. Once the decision was made, I committed to it and delivered it.</p>
+      </section>
+
+      <section aria-labelledby="outcome">
+        <h2 id="outcome">Outcome</h2>
+        <p>The platform soft-launched in January 2023 with a small group of clinicians and patients. I left shortly after.</p>
+      </section>
+
+      <section aria-labelledby="stack">
+        <h2 id="stack">Stack</h2>
+        <ul class="chips">
+          <li>Next.js</li><li>React</li><li>TypeScript</li><li>Vanilla Extract</li><li>Storybook</li><li>Directus</li><li>PostgreSQL (row-level security)</li><li>Auth0</li><li>Stripe</li><li>Sanity</li><li>Semble</li><li>Truepill</li><li>Pipedream</li><li>Segment</li><li>Terraform</li><li>S3</li><li>CloudFront</li><li>Route 53</li>
+        </ul>
+      </section>
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <ul>
+      <li><a href="/work/">Work</a></li>
+      <li><a href="/about/">About</a></li>
+      <li><a href="/labs/">Labs</a></li>
+    </ul>
+    <small>© 2026 Zak Knudsen</small>
+  </footer>
+</body>
+</html>

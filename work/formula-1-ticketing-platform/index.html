@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Moving a live Formula 1 ticketing platform out of a disrupted AWS region | Zak Knudsen</title>
+  <meta name="description" content="Case study: I moved a Formula 1 circuit's live ticketing platform from AWS me-south-1 to eu-west-1, rebuilt it on Amazon ECS with AWS Fargate, and ran two race on-sales.">
+  <link rel="canonical" href="https://zakknudsen.com/work/formula-1-ticketing-platform/">
+  <link rel="icon" href="/img/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/css/style.css">
+
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Zak Knudsen">
+  <meta property="og:title" content="Moving a live Formula 1 ticketing platform out of a disrupted AWS region">
+  <meta property="og:description" content="Region migration, re-architecture on Amazon ECS with AWS Fargate, and two race on-sales run in production.">
+  <meta property="og:url" content="https://zakknudsen.com/work/formula-1-ticketing-platform/">
+  <meta name="twitter:card" content="summary">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to main content</a>
+
+  <header class="site-header">
+    <a class="site-title" href="/">Zak Knudsen</a>
+    <nav class="site-nav" aria-label="Main">
+      <ul>
+        <li><a href="/work/" aria-current="page">Work</a></li>
+        <li><a href="/about/">About</a></li>
+        <li><a href="/#contact">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main id="main">
+    <article>
+      <header>
+        <p class="eyebrow">Case study</p>
+        <h1>Moving a live Formula 1 ticketing platform out of a disrupted AWS region</h1>
+        <p class="lede">A Formula 1 circuit, via Browser London. Contract. 2025–2026. Sole engineer on the migration and the new stack.</p>
+        <dl class="meta">
+          <div><dt>Client</dt><dd>A Formula 1 circuit, via Browser London</dd></div>
+          <div><dt>Role</dt><dd>Sole engineer on the migration and the new stack</dd></div>
+          <div><dt>Period</dt><dd>2025–2026</dd></div>
+          <div><dt>Engagement</dt><dd>Contract</dd></div>
+        </dl>
+      </header>
+
+      <section aria-labelledby="context">
+        <h2 id="context">Client context</h2>
+        <p>The client is a Formula 1 circuit. Its public site has two parts. One is a WordPress marketing site in English and Arabic. The other is a custom PHP ticketing application on the AudienceView ticketing API. The ticketing app has no database of its own. It turns web requests into ticketing API calls and renders the results.</p>
+      </section>
+
+      <section aria-labelledby="region-down">
+        <h2 id="region-down">The region went down</h2>
+        <p>In March 2026 strikes on AWS facilities disrupted the Bahrain region (<span class="mono">me-south-1</span>). The platform's whole AWS estate ran there. I moved it to Ireland (<span class="mono">eu-west-1</span>) over March and April 2026. I did all of the migration myself. No S3 buckets were lost in the move.</p>
+      </section>
+
+      <section aria-labelledby="why-new-stack">
+        <h2 id="why-new-stack">Why it needed a new stack anyway</h2>
+        <p>The old platform ran one PHP 7.4 container as six ECS tasks on EC2. PHP 7.4 reached end of life in November 2022. In August 2026 a routine media plugin update required PHP 8.1. It broke every image on the site. The tasks and the load balancer stayed healthy, so no health check caught it. I rolled the image back. The runtime was now blocking routine security updates. The stack could no longer be maintained without being changed.</p>
+      </section>
+
+      <section aria-labelledby="new-architecture">
+        <h2 id="new-architecture">The new architecture</h2>
+        <p>I re-architected the platform on Amazon ECS with AWS Fargate.</p>
+        <ul>
+          <li>Two services: the CMS and the ticketing app. A WordPress plugin update can no longer take ticketing offline. Each service scales on its own.</li>
+          <li>WordPress on Bedrock. Core and every plugin are pinned with Composer. A plugin update is now a one-line, reviewable change.</li>
+          <li>PHP 8.3 and a major WordPress upgrade.</li>
+          <li>Configuration from SSM Parameter Store. No secrets in the repository.</li>
+          <li>Amazon ElastiCache for Valkey holds sessions and cache.</li>
+          <li>Amazon RDS for the CMS database. Media in S3, served through CloudFront.</li>
+          <li>CloudFront and AWS WAF in front. The load balancer accepts traffic only from CloudFront.</li>
+          <li>Cutover by Application Load Balancer rule. Rollback takes seconds. The old platform stayed in place as a rollback target.</li>
+        </ul>
+        <p>The main site moved to the new stack in August 2026. I recorded each design decision as an architecture decision record.</p>
+
+        <figure class="diagram">
+          <div class="diagram-scroll">
+            <img src="/img/f1-before-after.svg" width="960" height="800"
+                 alt="Two panels. Before: users reach an Application Load Balancer, which sends traffic to one PHP 7.4 container running WordPress and ticketing as six ECS tasks on EC2. The container talks to Amazon RDS for MySQL. Media is in S3, served through CloudFront. AWS WAF has a rate-limit rule. After: users reach CloudFront with AWS WAF, then an Application Load Balancer that accepts CloudFront only on port 443. Path routing sends /tickets to a ticketing service and everything else to a CMS service. Both are ECS services on AWS Fargate. The CMS service runs WordPress on Bedrock with PHP 8.3 and uses Amazon RDS for MySQL, with media in S3. The ticketing service runs PHP 8.3 with no database and calls the AudienceView ticketing API. Both services use ElastiCache for Valkey, SSM Parameter Store, and CloudWatch. A Queue-it connector on Lambda@Edge is attached to CloudFront, pre-staged and enabled by one change. Bitbucket Pipelines deploys through OIDC to an IAM role to ECS, with a manual approval gate before production.">
+          </div>
+          <figcaption>Before and after. Before: one container, so a plugin update could take ticketing down. After: two Fargate services behind CloudFront.</figcaption>
+        </figure>
+      </section>
+
+      <section aria-labelledby="delivery">
+        <h2 id="delivery">Delivery and observability</h2>
+        <p>I rebuilt CI/CD on Bitbucket Pipelines. Each image is built once. OIDC to AWS replaced a static access key. Every production deploy waits for a manual approval. I wrote the deploy and rollback runbooks.</p>
+        <p>I built the observability layer in CloudWatch: structured JSON logs, metric filters, alarms, and a dashboard. The definitions live in the repository.</p>
+      </section>
+
+      <section aria-labelledby="august-on-sale">
+        <h2 id="august-on-sale">The August 2026 on-sale</h2>
+        <p>In August 2026 the platform sold tickets for a Formula 1 race weekend. I ran production through the on-sale.</p>
+        <ul>
+          <li>The day before launch, the database saturated for 14 minutes. I traced it to a single scanning IP address. It was making thousands of requests for missing pages, and each one ran uncached. I tightened the WAF rules. I locked the load balancer so it accepts traffic only from CloudFront. I replaced long-lived AWS keys with task roles.</li>
+          <li>I found and fixed several classes of server error. The largest single fix cut server errors by about 85 percent.</li>
+          <li>I load-tested with k6. The ceiling was about 11 requests per second at the ticketing vendor's API. Our containers were not the limit.</li>
+          <li>I pre-staged a Queue-it waiting room as a Lambda@Edge connector. Turning it on is one reversible CloudFront change. It needs no software release.</li>
+          <li>I found a session-cookie defect. Our client code cut the vendor's session cookie short by 17 characters. About two thirds of ticketing calls failed as a result. After the fix, pricing calls went from 3 of 8 succeeding to 10 of 10.</li>
+        </ul>
+      </section>
+
+      <section aria-labelledby="september-on-sale">
+        <h2 id="september-on-sale">The September 2026 on-sale</h2>
+        <p>On 30 September 2026 tickets for the next Formula 1 season went on sale on the new stack. A Queue-it waiting room was live for the event. Card payments had been stalling after the 3-D Secure device check. The 3-D Secure provider had moved that check to a new host. Our page only trusted the old one. I fixed it before the sale. On the day I shipped a card-form hotfix. Form rejections fell from 82 of 88 submits to 0 of 5.</p>
+
+        <figure class="diagram">
+          <div class="diagram-scroll">
+            <img src="/img/f1-timeline.svg" width="960" height="440"
+                 alt="Timeline with six points. March 2026: AWS Bahrain region me-south-1 disrupted. March to April 2026: whole AWS estate moved to Ireland, eu-west-1. 6 August 2026: on-sale launch day on the old stack. 7 August 2026: a plugin outage proves the PHP 7.4 stack cannot be maintained, and the new stack is decided and scaffolded. August 2026: main site cut over to the Fargate stack; on 28 August the session-cookie fix reached production and the load balancer was locked to CloudFront. 30 September 2026: next season's on-sale runs on the new stack with a live Queue-it waiting room.">
+          </div>
+          <figcaption>Timeline, March to September 2026.</figcaption>
+        </figure>
+      </section>
+
+      <section aria-labelledby="how-i-work">
+        <h2 id="how-i-work">How I work on it</h2>
+        <p>I operate the platform with an AI coding agent (Claude Code) under written guardrails I authored. Nothing deploys straight to production. Changes go to UAT first. AWS profile rules are fixed. No secrets go in config. Decisions live in ADRs. Procedures live in runbooks.</p>
+      </section>
+
+      <section aria-labelledby="stack">
+        <h2 id="stack">Stack</h2>
+        <ul class="chips">
+          <li>Amazon ECS</li><li>AWS Fargate</li><li>ALB</li><li>CloudFront</li><li>AWS WAF</li><li>Lambda@Edge</li><li>RDS</li><li>S3</li><li>ElastiCache (Valkey)</li><li>SSM Parameter Store</li><li>CloudWatch</li><li>IAM OIDC</li><li>Docker</li><li>Bitbucket Pipelines</li><li>k6</li><li>WordPress</li><li>Bedrock</li><li>Composer</li><li>PHP 8.3</li><li>WPML</li><li>AudienceView API</li><li>Queue-it</li>
+        </ul>
+      </section>
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <ul>
+      <li><a href="/work/">Work</a></li>
+      <li><a href="/about/">About</a></li>
+      <li><a href="/labs/">Labs</a></li>
+    </ul>
+    <small>© 2026 Zak Knudsen</small>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,118 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 800" width="960" height="800" role="img" aria-labelledby="t d">
+  <title id="t">Formula 1 ticketing platform, before and after</title>
+  <desc id="d">Container-level diagram of the platform before and after the 2026 re-architecture. See the text alternative on the page.</desc>
+  <style>
+    svg { --bg:#f5f6f8; --box:#ffffff; --line:#4a5360; --text:#1b1f24; --muted:#4a5360; --accent:#0b5cad; --hl:#e6f0fa; }
+    @media (prefers-color-scheme: dark) {
+      svg { --bg:#1a1f26; --box:#111418; --line:#a9b2bf; --text:#e8ebef; --muted:#a9b2bf; --accent:#7ab7ff; --hl:#16263a; }
+    }
+    .bg { fill:var(--bg); }
+    .box { fill:var(--box); stroke:var(--line); stroke-width:1.5; }
+    .hl { fill:var(--hl); stroke:var(--accent); stroke-width:2; }
+    .dash { fill:none; stroke:var(--accent); stroke-width:1.5; stroke-dasharray:6 4; }
+    .frame { fill:none; stroke:var(--accent); stroke-width:2; stroke-dasharray:2 4; }
+    .ln { stroke:var(--line); stroke-width:1.5; fill:none; }
+    .ldash { stroke:var(--accent); stroke-width:1.5; fill:none; stroke-dasharray:6 4; }
+    text { font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif; font-size:14px; fill:var(--text); }
+    .h { font-weight:700; font-size:16px; }
+    .m { fill:var(--muted); font-size:13px; }
+    .c { text-anchor:middle; }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="var(--line)"/></marker>
+    <marker id="ara" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="var(--accent)"/></marker>
+  </defs>
+  <rect class="bg" width="960" height="800"/>
+  <text class="h" x="20" y="30">Before: eu-west-1 after the region move, PHP 7.4</text>
+  <rect class="box" x="20" y="50" width="110" height="60" rx="6"/>
+  <text class="c" x="75.0" y="85.0">Users</text>
+  <rect class="box" x="170" y="50" width="150" height="60" rx="6"/>
+  <text class="c h" x="245.0" y="76.0">Application</text>
+  <text class="c m" x="245.0" y="94.0">Load Balancer</text>
+  <rect class="hl" x="360" y="40" width="250" height="80" rx="6"/>
+  <text class="c h" x="485.0" y="67.0">One PHP 7.4 container</text>
+  <text class="c m" x="485.0" y="85.0">WordPress + ticketing</text>
+  <text class="c m" x="485.0" y="103.0">6 ECS tasks on EC2</text>
+  <rect class="box" x="650" y="50" width="160" height="60" rx="6"/>
+  <text class="c h" x="730.0" y="76.0">Amazon RDS</text>
+  <text class="c m" x="730.0" y="94.0">MySQL</text>
+  <rect class="box" x="170" y="150" width="150" height="50" rx="6"/>
+  <text class="c h" x="245.0" y="171.0">AWS WAF</text>
+  <text class="c m" x="245.0" y="189.0">rate-limit rule</text>
+  <rect class="box" x="360" y="150" width="250" height="50" rx="6"/>
+  <text class="c h" x="485.0" y="171.0">Media files in S3</text>
+  <text class="c m" x="485.0" y="189.0">served through CloudFront</text>
+  <path class="ln" d="M130 80 L170 80" marker-end="url(#ar)"/>
+  <path class="ln" d="M320 80 L360 80" marker-end="url(#ar)"/>
+  <path class="ln" d="M610 80 L650 80" marker-end="url(#ar)"/>
+  <path class="ln" d="M245 150 L245 110" marker-end="url(#ar)"/>
+  <path class="ln" d="M485 120 L485 150" marker-end="url(#ar)"/>
+  <text class="m" x="20" y="235">One container. A plugin update could take ticketing down.</text>
+  <text class="h" x="20" y="290">After: eu-west-1</text>
+  <rect class="box" x="20" y="310" width="110" height="60" rx="6"/>
+  <text class="c" x="75.0" y="345.0">Users</text>
+  <rect class="hl" x="170" y="310" width="190" height="60" rx="6"/>
+  <text class="c h" x="265.0" y="336.0">CloudFront</text>
+  <text class="c m" x="265.0" y="354.0">+ AWS WAF</text>
+  <rect class="box" x="410" y="310" width="250" height="60" rx="6"/>
+  <text class="c h" x="535.0" y="336.0">Application Load Balancer</text>
+  <text class="c m" x="535.0" y="354.0">accepts CloudFront only, 443</text>
+  <path class="ln" d="M130 340 L170 340" marker-end="url(#ar)"/>
+  <path class="ln" d="M360 340 L410 340" marker-end="url(#ar)"/>
+  <rect class="dash" x="700" y="300" width="240" height="50" rx="6"/>
+  <text class="c h" x="820.0" y="321.0">Queue-it connector</text>
+  <text class="c m" x="820.0" y="339.0">Lambda@Edge</text>
+  <text class="m" x="820" y="372" text-anchor="middle">pre-staged, one change to enable</text>
+  <path class="ldash" d="M700 325 L665 325 L665 290 L265 290 L265 310" marker-end="url(#ara)"/>
+  <rect class="hl" x="200" y="450" width="260" height="90" rx="6"/>
+  <text class="c h" x="330.0" y="482.0">CMS service</text>
+  <text class="c m" x="330.0" y="500.0">ECS on Fargate</text>
+  <text class="c m" x="330.0" y="518.0">WordPress on Bedrock, PHP 8.3</text>
+  <rect class="hl" x="500" y="450" width="260" height="90" rx="6"/>
+  <text class="c h" x="630.0" y="482.0">Ticketing service</text>
+  <text class="c m" x="630.0" y="500.0">ECS on Fargate</text>
+  <text class="c m" x="630.0" y="518.0">PHP 8.3, no database</text>
+  <path class="ln" d="M535 370 L535 410 L330 410 L330 450" marker-end="url(#ar)"/>
+  <path class="ln" d="M535 410 L630 410 L630 450" marker-end="url(#ar)"/>
+  <text class="m" x="340" y="404" text-anchor="end">everything else</text>
+  <text class="m" x="640" y="404">/tickets</text>
+  <rect class="box" x="20" y="455" width="130" height="80" rx="6"/>
+  <text class="c h" x="85.0" y="491.0">Amazon RDS</text>
+  <text class="c m" x="85.0" y="509.0">MySQL</text>
+  <path class="ln" d="M200 495 L150 495" marker-end="url(#ar)"/>
+  <rect class="box" x="810" y="455" width="130" height="80" rx="6"/>
+  <text class="c h" x="875.0" y="482.0">AudienceView</text>
+  <text class="c m" x="875.0" y="500.0">ticketing API</text>
+  <text class="c m" x="875.0" y="518.0">(external SaaS)</text>
+  <path class="ln" d="M760 495 L810 495" marker-end="url(#ar)"/>
+  <rect class="box" x="20" y="570" width="130" height="50" rx="6"/>
+  <text class="c h" x="85.0" y="591.0">Media in S3</text>
+  <text class="c m" x="85.0" y="609.0">via CloudFront</text>
+  <rect class="frame" x="190" y="620" width="580" height="80" rx="6"/>
+  <text class="m" x="480" y="638" text-anchor="middle">Shared by both services</text>
+  <rect class="box" x="200" y="648" width="170" height="44" rx="6"/>
+  <text class="c" x="285.0" y="675.0">ElastiCache for Valkey</text>
+  <rect class="box" x="390" y="648" width="170" height="44" rx="6"/>
+  <text class="c" x="475.0" y="675.0">SSM Parameter Store</text>
+  <rect class="box" x="580" y="648" width="180" height="44" rx="6"/>
+  <text class="c" x="670.0" y="675.0">CloudWatch</text>
+  <path class="ln" d="M330 540 L330 580 L480 580"/>
+  <path class="ln" d="M630 540 L630 580 L480 580"/>
+  <path class="ln" d="M480 580 L480 620" marker-end="url(#ar)"/>
+  <text class="m" x="494" y="600">sessions, config, logs</text>
+  <rect class="box" x="20" y="730" width="170" height="50" rx="6"/>
+  <text class="c" x="105.0" y="760.0">Bitbucket Pipelines</text>
+  <rect class="box" x="230" y="730" width="130" height="50" rx="6"/>
+  <text class="c" x="295.0" y="760.0">OIDC</text>
+  <rect class="box" x="400" y="730" width="110" height="50" rx="6"/>
+  <text class="c" x="455.0" y="760.0">IAM role</text>
+  <rect class="hl" x="550" y="730" width="170" height="50" rx="6"/>
+  <text class="c" x="635.0" y="760.0">manual approval</text>
+  <rect class="box" x="760" y="730" width="110" height="50" rx="6"/>
+  <text class="c" x="815.0" y="760.0">ECS deploy</text>
+  <path class="ln" d="M190 755 L230 755" marker-end="url(#ar)"/>
+  <path class="ln" d="M360 755 L400 755" marker-end="url(#ar)"/>
+  <path class="ln" d="M510 755 L550 755" marker-end="url(#ar)"/>
+  <path class="ln" d="M720 755 L760 755" marker-end="url(#ar)"/>
+  <text class="h" x="20" y="720">Delivery</text>
+</svg>
