@@ -436,3 +436,24 @@ td:first-child {
     color: #000;
   }
 }
+
+.credly-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin: 1rem 0;
+}
+
+.credly-badge {
+  margin: 0;
+  max-width: 12rem;
+  font-size: 0.9rem;
+}
+
+.credly-badge iframe {
+  display: block;
+}
+
+.credly-badge figcaption {
+  margin-top: 0.5rem;
+}
