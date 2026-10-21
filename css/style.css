@@ -557,6 +557,10 @@ td:first-child {
   --year: 3rem;
   --bar: 0.5rem;
   --place-color: light-dark(#8a94a3, #6b7684);
+  /* Residency bars take a colour from the flag of the country: US blue, Hong Kong red, Spain yellow. */
+  --flag-us: light-dark(#3c3b6e, #7c7bd1);
+  --flag-hk: light-dark(#de2910, #ff6a57);
+  --flag-es: #f1bf00;
   /* Where I lived and the axis fit their content; Work takes the rest. */
   display: grid;
   grid-template-columns: max-content max-content 1fr;
@@ -815,4 +819,11 @@ td:first-child {
   padding: 0.1rem 0.4rem;
   text-align: right;
   background: var(--color-bg);
+}
+
+.tl-place[data-country="US"] .tl-bar { background: var(--flag-us); }
+.tl-place[data-country="HK"] .tl-bar { background: var(--flag-hk); }
+.tl-place[data-country="ES"] .tl-bar {
+  background: var(--flag-es);
+  outline: 1px solid light-dark(rgb(0 0 0 / 0.35), transparent); /* yellow alone is faint on white */
 }
