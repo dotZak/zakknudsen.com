@@ -725,8 +725,8 @@ td:first-child {
 
 .tl-place .tl-bar {
   right: 0;
-  height: 100%;
-  top: 0;
+  top: calc(var(--b-top, 0) * var(--year));
+  height: calc(var(--b-span, var(--span)) * var(--year));
   background: var(--place-color);
 }
 
@@ -772,16 +772,6 @@ td:first-child {
   font-weight: 600;
 }
 
-/* A role change inside one company: a line where it happened, the new title right beside it. */
-.tl-change::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0.5rem;
-  border-top: 1px solid var(--color-text-muted);
-}
-
 /* A short stay gets its name and dates on one line so it cannot run into the next label. */
 .tl-compact .tl-label {
   display: flex;
@@ -790,7 +780,7 @@ td:first-child {
   gap: 0 0.5rem;
 }
 
-/* Education is time spent studying, not working: a shaded band behind the roles. */
+/* Education and time away are not work: shaded bands behind the roles. */
 .tl-edu {
   grid-column: 3;
   grid-row: 1;
@@ -820,7 +810,6 @@ td:first-child {
   right: 0.5rem;
   transform: translateY(-50%);
   padding: 0 0.4rem;
-  background: var(--color-bg);
 }
 
 .tl-label .tl-edu-name {
@@ -877,3 +866,13 @@ td:first-child {
 .tl-info:focus::after {
   opacity: 1;
 }
+
+/* Time away inside a stay: a dotted line. Its label is a shaded band in the Work column. */
+.tl-place-thread {
+  position: absolute;
+  right: calc(var(--bar) / 2 - 1px);
+  top: calc(var(--b-top) * var(--year));
+  height: calc(var(--b-span) * var(--year));
+  border-right: 2px dotted var(--color-text-muted);
+}
+
