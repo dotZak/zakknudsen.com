@@ -555,17 +555,21 @@ td:first-child {
 
 .timeline {
   --year: 3rem;
-  --axis: 5.5rem;
   --bar: 0.5rem;
   --place-color: light-dark(#8a94a3, #6b7684);
-  min-width: 32rem;
+  /* Where I lived and the axis fit their content; Work takes the rest. */
+  display: grid;
+  grid-template-columns: max-content max-content 1fr;
+  min-width: 38rem;
   font-size: 0.875rem;
 }
 
 .tl-heads,
-.tl-plot {
+.tl-plot,
+.tl-origin {
+  grid-column: 1 / -1;
   display: grid;
-  grid-template-columns: 1fr var(--axis) 1fr;
+  grid-template-columns: subgrid;
 }
 
 .tl-heads {
@@ -581,9 +585,15 @@ td:first-child {
   text-align: right;
 }
 
-/* Year lines run the full width, one at the top of every year. */
 .tl-plot {
   height: calc(var(--years) * var(--year));
+}
+
+/* Year lines run from the axis to the right edge, one at the top of every year. */
+.tl-plot::before {
+  content: "";
+  grid-column: 2 / -1;
+  grid-row: 1;
   background-image: repeating-linear-gradient(to bottom, var(--color-border) 0 1px, transparent 1px var(--year));
 }
 
@@ -596,15 +606,28 @@ td:first-child {
   padding: 0;
 }
 
+/* Residencies share one grid cell, so the column is as wide as the widest label. */
 .tl-places {
   grid-column: 1;
   grid-row: 1;
+  display: grid;
+  align-content: start;
 }
 
 .tl-axis {
   grid-column: 2;
   grid-row: 1;
   position: relative;
+  padding-inline: 0.5rem 1.1rem;
+}
+
+.tl-axis-sizer {
+  display: block;
+  height: 0;
+  overflow: hidden;
+  visibility: hidden;
+  font-size: 0.8rem;
+  font-variant-numeric: tabular-nums;
 }
 
 .tl-threads,
@@ -618,7 +641,7 @@ td:first-child {
   content: "";
   position: absolute;
   inset-block: 0;
-  left: calc(50% - 1px);
+  left: calc(100% - 0.6rem - 1px);
   border-left: 2px solid var(--color-border);
 }
 
@@ -626,7 +649,7 @@ td:first-child {
   content: "";
   position: absolute;
   inset-block: 0;
-  left: calc(50% - 0.3rem);
+  left: calc(100% - 0.9rem);
   width: 0.6rem;
   background-image: repeating-linear-gradient(to bottom, var(--color-border) 0 1px, transparent 1px calc(var(--year) / 12));
 }
@@ -634,7 +657,7 @@ td:first-child {
 .tl-year {
   position: absolute;
   top: calc(var(--top) * var(--year));
-  right: calc(50% + 0.5rem);
+  right: 1.1rem;
   padding-top: 0.2rem;
   color: var(--color-text-muted);
   font-size: 0.8rem;
@@ -687,7 +710,10 @@ td:first-child {
 
 /* Residencies: bar beside the axis, text to its left. */
 .tl-place {
-  inset-inline: 0;
+  grid-area: 1 / 1;
+  position: relative;
+  top: auto;
+  margin-top: calc(var(--top) * var(--year));
   padding-right: calc(var(--bar) + 0.6rem);
   text-align: right;
 }
@@ -720,15 +746,11 @@ td:first-child {
 }
 
 /* The one month before the first role, then the year of birth. */
-.tl-origin {
-  display: grid;
-  grid-template-columns: 1fr var(--axis) 1fr;
-}
-
 .tl-origin-line {
   grid-column: 2;
   grid-row: 1;
-  justify-self: center;
+  justify-self: end;
+  margin-right: calc(0.6rem - 1px);
   height: calc(var(--year) / 12);
   border-left: 2px dotted var(--color-text-muted);
 }
@@ -736,10 +758,61 @@ td:first-child {
 .tl-origin p {
   grid-column: 2;
   grid-row: 2;
+  justify-self: end;
+  transform: translateX(calc(50% - 0.6rem)); /* centred under the axis line */
   margin: 0.25rem 0 0;
-  text-align: center;
   white-space: nowrap;
   color: var(--color-text-muted);
   font-size: 0.8rem;
   font-weight: 600;
+}
+
+/* A role change inside one company: a line where it happened, the new title right beside it. */
+.tl-change::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0.5rem;
+  border-top: 1px solid var(--color-text-muted);
+}
+
+/* A short stay gets its name and dates on one line so it cannot run into the next label. */
+.tl-compact .tl-label {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 0 0.5rem;
+}
+
+/* Education is time spent studying, not working: a shaded band behind the roles. */
+.tl-edu {
+  grid-column: 3;
+  grid-row: 1;
+  position: relative;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.tl-edu-band {
+  position: absolute;
+  inset-inline: 0;
+  top: calc(var(--top) * var(--year));
+  height: calc(var(--span) * var(--year));
+  border-block: 1px dashed var(--color-text-muted);
+  background-image: repeating-linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--color-accent) 16%, transparent) 0 0.35rem,
+    color-mix(in srgb, var(--color-accent) 6%, transparent) 0.35rem 0.7rem
+  );
+}
+
+.tl-edu-band .tl-label {
+  position: absolute;
+  top: 0;
+  right: 0.5rem;
+  padding: 0.1rem 0.4rem;
+  text-align: right;
+  background: var(--color-bg);
 }
