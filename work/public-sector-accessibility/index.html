@@ -8,6 +8,7 @@
   <link rel="canonical" href="https://zakknudsen.com/work/public-sector-accessibility/">
   <link rel="icon" href="/img/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="/css/style.css">
+  <script src="/js/theme-init.js"></script>
 
   <meta property="og:type" content="article">
   <meta property="og:site_name" content="Zak Knudsen">
@@ -21,13 +22,16 @@
 
   <header class="site-header">
     <a class="site-title" href="/">Zak Knudsen</a>
-    <nav class="site-nav" aria-label="Main">
-      <ul>
-        <li><a href="/work/" aria-current="page">Work</a></li>
-        <li><a href="/about/">About</a></li>
-        <li><a href="/#contact">Contact</a></li>
-      </ul>
-    </nav>
+    <div class="site-header-end">
+      <nav class="site-nav" aria-label="Main">
+        <ul>
+          <li><a href="/work/" aria-current="page">Work</a></li>
+          <li><a href="/about/">About</a></li>
+          <li><a href="/#contact">Contact</a></li>
+        </ul>
+      </nav>
+      <theme-toggle></theme-toggle>
+    </div>
   </header>
 
   <main id="main">
@@ -74,12 +78,24 @@
   </main>
 
   <footer class="site-footer">
-    <ul>
-      <li><a href="/work/">Work</a></li>
-      <li><a href="/about/">About</a></li>
-      <li><a href="/labs/">Labs</a></li>
-    </ul>
-    <small>© 2026 Zak Knudsen</small>
+    <div class="footer-links">
+      <ul>
+        <li><a href="/work/">Work</a></li>
+        <li><a href="/about/">About</a></li>
+        <li><a href="/labs/">Labs</a></li>
+      </ul>
+      <ul class="footer-external">
+        <li class="social-link"><a href="https://www.linkedin.com/in/zakknudsen"><svg class="icon" aria-hidden="true" focusable="false"><use href="/img/icons.svg#linkedin"/></svg><span class="visually-hidden">LinkedIn</span></a></li>
+        <li class="social-link"><a href="https://github.com/dotZak"><svg class="icon" aria-hidden="true" focusable="false"><use href="/img/icons.svg#github"/></svg><span class="visually-hidden">GitHub</span></a></li>
+        <li class="social-link"><a href="mailto:zak@zakknudsen.com"><svg class="icon" aria-hidden="true" focusable="false"><use href="/img/icons.svg#mail"/></svg><span class="visually-hidden">Email zak@zakknudsen.com</span></a></li>
+      </ul>
+    </div>
+    <div class="footer-meta">
+      <small>© <span data-current-year>2026</span> Zak Knudsen</small>
+      <theme-toggle></theme-toggle>
+    </div>
   </footer>
+  <script src="/js/footer-year.js" defer></script>
+  <script src="/js/theme-toggle.js" defer></script>
 </body>
 </html>

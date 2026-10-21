@@ -8,6 +8,7 @@
   <link rel="canonical" href="https://zakknudsen.com/labs/">
   <link rel="icon" href="/img/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="/css/style.css">
+  <script src="/js/theme-init.js"></script>
 
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Zak Knudsen">
@@ -21,13 +22,16 @@
 
   <header class="site-header">
     <a class="site-title" href="/">Zak Knudsen</a>
-    <nav class="site-nav" aria-label="Main">
-      <ul>
-        <li><a href="/work/">Work</a></li>
-        <li><a href="/about/">About</a></li>
-        <li><a href="/#contact">Contact</a></li>
-      </ul>
-    </nav>
+    <div class="site-header-end">
+      <nav class="site-nav" aria-label="Main">
+        <ul>
+          <li><a href="/work/">Work</a></li>
+          <li><a href="/about/">About</a></li>
+          <li><a href="/#contact">Contact</a></li>
+        </ul>
+      </nav>
+      <theme-toggle></theme-toggle>
+    </div>
   </header>
 
   <main id="main">
@@ -55,15 +59,34 @@
       <p>A working method for building software with AI agents. It draws on domain-driven design, BDD, TDD, and ADRs. Its rules are encoded as tools and shared vocabulary that constrain what an agent does. Working documents expire when a branch merges. One hard rule: CLI before HTTP. A Rust, Axum, and PostgreSQL service template puts the method into practice.</p>
       <ul class="chips"><li>Rust</li><li>Axum</li><li>PostgreSQL</li><li>ADRs</li><li>TDD</li><li>BDD</li><li>DDD</li></ul>
     </article>
+
+    <article class="card">
+      <h2>Smallchat for WordPress <span class="status">Maintenance only</span> <span class="status">Author</span> <span class="status">Plugin</span> <span class="status">WordPress</span></h2>
+      <p>A WordPress plugin that adds the Smallchat chat widget to a site, so visitors can talk to a team through Slack. The official plugin accepts arbitrary JavaScript. Mine loads only the Smallchat embed code, which helps where plugin installation is restricted. You enter your Smallchat client ID under Settings, then Smallchat. I no longer develop it. I update it to keep it compatible with new WordPress versions.</p>
+      <ul class="chips"><li>PHP</li><li>Slack</li></ul>
+      <p><a href="https://wordpress.org/plugins/load-smallchat/">Smallchat for WordPress on WordPress.org</a></p>
+    </article>
   </main>
 
   <footer class="site-footer">
-    <ul>
-      <li><a href="/work/">Work</a></li>
-      <li><a href="/about/">About</a></li>
-      <li><a href="/labs/">Labs</a></li>
-    </ul>
-    <small>© 2026 Zak Knudsen</small>
+    <div class="footer-links">
+      <ul>
+        <li><a href="/work/">Work</a></li>
+        <li><a href="/about/">About</a></li>
+        <li><a href="/labs/">Labs</a></li>
+      </ul>
+      <ul class="footer-external">
+        <li class="social-link"><a href="https://www.linkedin.com/in/zakknudsen"><svg class="icon" aria-hidden="true" focusable="false"><use href="/img/icons.svg#linkedin"/></svg><span class="visually-hidden">LinkedIn</span></a></li>
+        <li class="social-link"><a href="https://github.com/dotZak"><svg class="icon" aria-hidden="true" focusable="false"><use href="/img/icons.svg#github"/></svg><span class="visually-hidden">GitHub</span></a></li>
+        <li class="social-link"><a href="mailto:zak@zakknudsen.com"><svg class="icon" aria-hidden="true" focusable="false"><use href="/img/icons.svg#mail"/></svg><span class="visually-hidden">Email zak@zakknudsen.com</span></a></li>
+      </ul>
+    </div>
+    <div class="footer-meta">
+      <small>© <span data-current-year>2026</span> Zak Knudsen</small>
+      <theme-toggle></theme-toggle>
+    </div>
   </footer>
+  <script src="/js/footer-year.js" defer></script>
+  <script src="/js/theme-toggle.js" defer></script>
 </body>
 </html>

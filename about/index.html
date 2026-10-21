@@ -8,6 +8,7 @@
   <link rel="canonical" href="https://zakknudsen.com/about/">
   <link rel="icon" href="/img/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="/css/style.css">
+  <script src="/js/theme-init.js"></script>
 
   <meta property="og:type" content="profile">
   <meta property="og:site_name" content="Zak Knudsen">
@@ -21,13 +22,16 @@
 
   <header class="site-header">
     <a class="site-title" href="/">Zak Knudsen</a>
-    <nav class="site-nav" aria-label="Main">
-      <ul>
-        <li><a href="/work/">Work</a></li>
-        <li><a href="/about/" aria-current="page">About</a></li>
-        <li><a href="/#contact">Contact</a></li>
-      </ul>
-    </nav>
+    <div class="site-header-end">
+      <nav class="site-nav" aria-label="Main">
+        <ul>
+          <li><a href="/work/">Work</a></li>
+          <li><a href="/about/" aria-current="page">About</a></li>
+          <li><a href="/#contact">Contact</a></li>
+        </ul>
+      </nav>
+      <theme-toggle></theme-toggle>
+    </div>
   </header>
 
   <main id="main">
@@ -62,11 +66,11 @@
             <tr><td>Mar 2023 – present</td><td>Senior Engineer (Contract)</td><td>Browser London</td></tr>
             <tr><td>2024</td><td>Freelance Developer</td><td>Rush Hour Digital</td></tr>
             <tr><td>Jun 2021 – Mar 2023</td><td>Tech Lead</td><td>Browser London</td></tr>
-            <tr><td>Jul 2014 – Aug 2020</td><td>Technical Director (Non-Equity Partner). Paused Nov 2016 – Jun 2017.</td><td>Rush Hour Media, Hong Kong (remote from Barcelona from 2019)</td></tr>
-            <tr><td>Nov 2016 – Jun 2017</td><td>Technical Project Manager</td><td>MerchantCantos (Brunswick Group), Hong Kong</td></tr>
+            <tr><td>Jul 2014 – Aug 2020</td><td>Technical Director (Non-Equity Partner). Paused Nov 2016 – Jun 2017.</td><td>Rush Hour Media (now Rush Hour Digital), Hong Kong (remote from Barcelona from 2019)</td></tr>
+            <tr><td>Nov 2016 – Jun 2017</td><td>Technical Project Manager</td><td>MerchantCantos (now Brunswick Creative, part of Brunswick Group), Hong Kong</td></tr>
             <tr><td>2013 – 2014</td><td>Technical Analyst</td><td>Squarespace</td></tr>
             <tr><td>2010 – 2012</td><td>IT Consultant and Systems Administrator</td><td>LifeguardTech, New York</td></tr>
-            <tr><td>2007 – 2011</td><td>Specialist, then Lead Specialist</td><td>Apple Stores, Honolulu and New York</td></tr>
+            <tr><td>2007 – 2011</td><td>Specialist, then Lead Specialist</td><td>Apple Inc., Retail, Honolulu and New York</td></tr>
             <tr><td>2003 – 2006</td><td>Assembly Technician to Lead Technical Project Manager</td><td>TenX Networks, Salt Lake City</td></tr>
           </tbody>
         </table>
@@ -78,7 +82,7 @@
       <div class="credly-badges">
         <figure class="credly-badge">
           <div data-iframe-width="150" data-iframe-height="242" data-share-badge-id="99c837c4-0b77-433a-b0dd-1a6452bc519f" data-share-badge-host="https://www.credly.com"></div>
-          <figcaption><a href="https://www.credly.com/badges/99c837c4-0b77-433a-b0dd-1a6452bc519f">AWS Certified Solutions Architect – Associate (SAA-C03)</a>, March 2026</figcaption>
+          <figcaption><a href="https://www.credly.com/badges/99c837c4-0b77-433a-b0dd-1a6452bc519f">AWS Certified Solutions Architect – Associate</a>, March 2026</figcaption>
         </figure>
         <figure class="credly-badge">
           <div data-iframe-width="150" data-iframe-height="242" data-share-badge-id="576f50b4-657a-4040-87d8-9b93c806e86d" data-share-badge-host="https://www.credly.com"></div>
@@ -111,13 +115,25 @@
   </main>
 
   <footer class="site-footer">
-    <ul>
-      <li><a href="/work/">Work</a></li>
-      <li><a href="/about/">About</a></li>
-      <li><a href="/labs/">Labs</a></li>
-    </ul>
-    <small>© 2026 Zak Knudsen</small>
+    <div class="footer-links">
+      <ul>
+        <li><a href="/work/">Work</a></li>
+        <li><a href="/about/">About</a></li>
+        <li><a href="/labs/">Labs</a></li>
+      </ul>
+      <ul class="footer-external">
+        <li class="social-link"><a href="https://www.linkedin.com/in/zakknudsen"><svg class="icon" aria-hidden="true" focusable="false"><use href="/img/icons.svg#linkedin"/></svg><span class="visually-hidden">LinkedIn</span></a></li>
+        <li class="social-link"><a href="https://github.com/dotZak"><svg class="icon" aria-hidden="true" focusable="false"><use href="/img/icons.svg#github"/></svg><span class="visually-hidden">GitHub</span></a></li>
+        <li class="social-link"><a href="mailto:zak@zakknudsen.com"><svg class="icon" aria-hidden="true" focusable="false"><use href="/img/icons.svg#mail"/></svg><span class="visually-hidden">Email zak@zakknudsen.com</span></a></li>
+      </ul>
+    </div>
+    <div class="footer-meta">
+      <small>© <span data-current-year>2026</span> Zak Knudsen</small>
+      <theme-toggle></theme-toggle>
+    </div>
   </footer>
   <script type="text/javascript" async src="//cdn.credly.com/assets/utilities/embed.js"></script>
+  <script src="/js/footer-year.js" defer></script>
+  <script src="/js/theme-toggle.js" defer></script>
 </body>
 </html>

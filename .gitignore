@@ -1,2 +1,6 @@
 legacy-placeholder/
 .DS_Store
+
+# Source data and tooling live in the private CMS repository. Never commit them here.
+/data/
+/tools/
